@@ -193,7 +193,7 @@ For other editors, make sure you have the corresponding [TypeScript plugin](http
 The most obvious difference in a TypeScript + Node project is the folder structure.
 In a TypeScript project, it's best to have separate _source_  and _distributable_ files.
 TypeScript (`.ts`) files live in your `src` folder and after compilation are output as JavaScript (`.js`) in the `dist` folder.
-The `test` and `views` folders remain top level as expected.
+The `test` folder remain top level as expected.
 
 The full folder structure of this app is explained below:
 
@@ -213,10 +213,8 @@ The full folder structure of this app is explained below:
 | **src/types**            | Holds .d.ts files not found on DefinitelyTyped. Covered more in this [section](#type-definition-dts-files)          |
 | **src**/server.ts        | Entry point to your express app                                                               |
 | **test**                 | Contains your tests. Separate from source because there is a different build process.         |
-| **views**                | Views define how your app renders on the client. In this case we're using pug                 |
 | .env.example             | API keys, tokens, passwords, database URI. Clone this, but don't check it in to public repos. |
-| .travis.yml              | Used to configure Travis CI build                                                             |
-| .copyStaticAssets.ts     | Build script that copies images, fonts, and JS libs to the dist folder                        |
+| .travis.yml              | Used to configure Travis CI build                                                             |                       |
 | jest.config.js           | Used to configure Jest running tests written in TypeScript                                    |
 | package.json             | File that contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped)                          |
 | tsconfig.json            | Config settings for compiling server code written in TypeScript                               |
@@ -290,18 +288,15 @@ Below is a list of all the scripts this template has available:
 | Npm Script | Description |
 | ------------------------- | ------------------------------------------------------------------------------------------------- |
 | `start`                   | Does the same as 'npm run serve'. Can be invoked with `npm start`                                 |
-| `build`                   | Full build. Runs ALL build tasks (`build-sass`, `build-ts`, `lint`, `copy-static-assets`)       |
+| `build`                   | Full build. Runs ALL build tasks (`build-ts`, `lint`)       |
 | `serve`                   | Runs node on `dist/server.js` which is the apps entry point                                       |
 | `watch-node`              | Runs node with nodemon so the process restarts if it crashes. Used in the main watch task         |
-| `watch`                   | Runs all watch tasks (TypeScript, Sass, Node). Use this if you're not touching static assets.     |
+| `watch`                   | Runs all watch tasks (TypeScript, Node). Use this if you're not touching static assets.     |
 | `test`                    | Runs tests using Jest test runner                                                                 |
 | `watch-test`              | Runs tests in watch mode                                                                          |
 | `build-ts`                | Compiles all source `.ts` files to `.js` files in the `dist` folder                                 |
 | `watch-ts`                | Same as `build-ts` but continuously watches `.ts` files and re-compiles when needed                |
-| `build-sass`              | Compiles all `.scss` files to `.css` files                                                          |
-| `watch-sass`              | Same as `build-sass` but continuously watches `.scss` files and re-compiles when needed            |
 | `lint`                    | Runs ESLint on project files                                                                       |
-| `copy-static-assets`      | Calls script that copies JS libs, fonts, and images to dist directory                             |
 | `debug`                   | Performs a full build and then serves the app in watch mode                                       |
 | `serve-debug`             | Runs the app with the --inspect flag                                                               |
 | `watch-debug`             | The same as `watch` but includes the --inspect flag so you can attach a debugger                   |
@@ -572,7 +567,6 @@ In that file you'll find two sections:
 | dotenv                          | Loads environment variables from .env file.                            |
 | errorhandler                    | Express 4 middleware.                                                 |
 | express                         | Node.js web framework.                                                |
-| express-flash                    | Provides flash messages for Express.                                   |
 | express-session                 | Express 4 middleware.                                                 |
 | express-validator               | Easy form validation for Express.                                     |
 | fbgraph                         | Facebook Graph API library.                                           |
@@ -596,11 +590,10 @@ In that file you'll find two sections:
 | chai                            | Testing utility library that makes it easier to write tests            |
 | concurrently                    | Utility that manages multiple concurrent tasks. Used with npm scripts  |
 | jest                            | Testing library for JavaScript.                                        |
-| node-sass                       | Allows to compile .scss files to .css                                  |
 | nodemon                         | Utility that automatically restarts node process when it crashes       |
 | supertest                       | HTTP assertion library.                                                |
 | ts-jest                         | A preprocessor with sourcemap support to help use TypeScript with Jest.|
-| ts-node                         | Enables directly running TS files. Used to run `copy-static-assets.ts` |
+| ts-node                         | Enables directly running TS files. |
 | eslint                          | Linter for JavaScript and TypeScript files                             |
 | typescript                      | JavaScript compiler/type checker that boosts JavaScript productivity   |
 
