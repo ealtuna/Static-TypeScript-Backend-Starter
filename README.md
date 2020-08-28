@@ -5,13 +5,6 @@ The main purpose of this repository is to show a working Node.js API Server + fr
 It is not a goal to be a comprehensive and definitive guide to making a TypeScript and Node project, but as a working reference maintained by the community. If you are interested in starting a new TypeScript project - check out the bootstrapping tools reference in [the TypeScript Website](https://www.typescriptlang.org/docs/home.html)
 
 
-[![Dependency Status](https://david-dm.org/Microsoft/TypeScript-Node-Starter.svg)](https://david-dm.org/Microsoft/TypeScript-Node-Starter) [![Build Status](https://travis-ci.org/Microsoft/TypeScript-Node-Starter.svg?branch=master)](https://travis-ci.org/Microsoft/TypeScript-Node-Starter)
-
-**Live Demo**: [https://typescript-node-starter.azurewebsites.net/](https://typescript-node-starter.azurewebsites.net/)
-
-![image](https://user-images.githubusercontent.com/820883/36764267-abbdb7f8-1be0-11e8-9678-2a9ea448d7f8.png)
-
-
 # Table of contents:
 
 - [Pre-reqs](#pre-reqs)
@@ -48,25 +41,7 @@ git clone --depth=1 https://github.com/Microsoft/TypeScript-Node-Starter.git <pr
 cd <project_name>
 npm install
 ```
-- Configure your mongoDB server
-```bash
-# create the db directory
-sudo mkdir -p /data/db
-# give the db correct read/write permissions
-sudo chmod 777 /data/db
 
-# starting from macOS 10.15 even the admin cannot create directory at root
-# so lets create the db directory under the home directory.
-mkdir -p ~/data/db
-# user account has automatically read and write permissions for ~/data/db.
-```
-- Start your mongoDB server (you'll probably want another command prompt)
-```bash
-mongod
-
-# on macOS 10.15 or above the db directory is under home directory
-mongod --dbpath ~/data/db
-```
 - Build and run the project
 ```
 npm run build
@@ -88,55 +63,6 @@ In this section, I'll walk you through how to deploy this app to Azure App Servi
 The Azure free tier gives you plenty of resources to play around with including up to 10 App Service instances, which is what we will be using.
 - [**VS Code**](https://code.visualstudio.com/) - We'll be using the interface provided by VS Code to quickly deploy our app.
 - [**Azure App Service VS Code extension**](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice) - In VS Code, search for `Azure App Service` in the extension marketplace (5th button down on the far left menu bar), install the extension, and then reload VS Code.
-- **Create a cloud database** -
-For local development, running MongoDB on localhost is fine, however once we deploy we need a database with high availability.
-The easiest way to achieve this is by using a managed cloud database.
-There are many different providers, but the easiest one to get started with is [MongoLab](#mlab).
-- **SendGrid Account** -
-If you don't have one, you can sign up for free, we will need it to send emails. There are many different providers that Nodemailer supports ([Well-known services](https://nodemailer.com/smtp/well-known/)), we'll be using [SendGrid](#sendgrid).
-
-### <a name="mlab"></a> Create a managed MongoDB with MongoLab
-1. Navigate to [MongoLab's Website](https://mlab.com/), sign up for a free account, and then log in.
-2. In the **MongoDB Deployments** section, click the **Create New** button.
-3. Select any provider (I recommend **Microsoft Azure** as it provides an easier path to upgrading to globally distributed instances later).
-4. Select **Sandbox** to keep it free unless you know what you're doing, and hit **Continue**.
-5. Select a region (I recommend the region geographically closest to your app's users).
-6. Add a name, click **Continue** again, and finally **Submit Order**.
-7. Once your new database is created, select it from the **MongoDB Deployments** section.
-8. Create a user by selecting the **User** tab, clicking the **Add database user** button, adding a username and password, and then clicking **Create**.
-A user account is required to connect to the database, so remember these values because you will need them as part of your connection string.
-9. Copy the connection string from the top of the page, it should look like this: `mongodb://<dbuser>:<dbpassword>@ds036069.mlab.com:36069/test-asdf`
-and replace `<dbUser>` and `<dbpassword>` with the credentials you just created.
-Back in your project, open your `.env` file and update `MONGODB_URI` with your new connection string.
-    > NOTE! - If you don't have an `.env` file yet, rename `.env.example` to `.env` and follow the comments to update the values in that file.
-10. **Success!**
-You can test that it works locally by updating `MONGODB_URI_LOCAL` to the same connection string you just updated in `MONGO_URI`.
-After rebuilding/serving, the app should work, but users that were previously created in local testing will not exist in the new database!
-Don't forget to return the `MONGO_URI_LOCAL` to your local test database (if you so desire).
-
-### <a name="sendgrid"></a> SendGrid Account
-1. Navigate to [SendGrid's Website](https://sendgrid.com/), sign up for a free account, and complete the verification process.
-2. Open your `.env` file and update `SENDGRID_USERNAME` and `SENDGRID_PASSWORD` with your SendGrid username and password respectively.
-
-## Deploying to Azure App Service
-Deploying from VS Code can be broken into the following steps:
-1. Authenticate your Azure account in VS Code
-2. Build your app
-3. Zip deploy using the Azure App Service extension
-
-### Sign in to your Azure account
-1. Open VS Code
-2. Expand the Azure App Service menu in the explorer menu
-    - If you don't see this, you might not have the `Azure App Service` extension installed.
-    See the pre-reqs section.
-3. Click `Sign in to Azure...`
-4. Choose `Copy & Open` from the resulting dialog
-    - This will open `aka.ms/devicelogin` in a browser window.
-    If it doesn't, just navigate there manually.
-5. Paste in the code that is on your clipboard.
-6. Go back to VS Code, you should now be signed in.
-You can confirm that everything worked by seeing your Azure subscription listed in the Azure App Service section of the explorer window.
-Additionally you should see the email associated with your account listed in the status bar at the bottom of VS Code.
 
 ### Build the app
 Building the app locally is required to generate a zip to deploy because the App Service won't execute build tasks.
@@ -206,9 +132,7 @@ The full folder structure of this app is explained below:
 | **dist**                 | Contains the distributable (or output) from your TypeScript build. This is the code you ship  |
 | **node_modules**         | Contains all your npm dependencies                                                            |
 | **src**                  | Contains your source code that will be compiled to the dist dir                               |
-| **src/config**           | Passport authentication strategies and login middleware. Add other complex config code here   |
 | **src/controllers**      | Controllers define functions that respond to various http requests                            |
-| **src/models**           | Models define Mongoose schemas that will be used in storing and retrieving data from MongoDB  |
 | **src/public**           | Static assets that will be used client side                                                   |
 | **src/types**            | Holds .d.ts files not found on DefinitelyTyped. Covered more in this [section](#type-definition-dts-files)          |
 | **src**/server.ts        | Entry point to your express app                                                               |
@@ -343,44 +267,6 @@ So when we write something like:
 import * as flash from "express-flash";
 ```
 First the compiler will look for a `d.ts` file in `node_modules/@types` and then when it doesn't find one look in `src/types` and find our file `express-flash.d.ts`.
-
-#### Using `dts-gen`
-Unless you are familiar with `.d.ts` files, I strongly recommend trying to use the tool [dts-gen](https://github.com/Microsoft/dts-gen) first.
-The [README](https://github.com/Microsoft/dts-gen#dts-gen-a-typescript-definition-file-generator) does a great job explaining how to use the tool, and for most cases, you'll get an excellent scaffold of a `.d.ts` file to start with.
-In this project, `bcrypt-nodejs.d.ts`, `fbgraph.d.ts`, and `lusca.d.ts` were all generated using `dts-gen`.
-
-#### Writing a `.d.ts` file
-If generating a `.d.ts` using `dts-gen` isn't working, [you should tell me about it first](https://www.surveymonkey.com/r/LN2CV82), but then you can create your own `.d.ts` file.
-
-If you just want to silence the compiler for the time being, create a file called `<some-library>.d.ts` in your `types` folder and then add this line of code:
-```ts
-declare module "<some-library>";
-```
-If you want to invest some time into making a great `.d.ts` file that will give you great type checking and IntelliSense, the TypeScript website has great [docs on authoring `.d.ts` files](http://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html).
-
-#### Contributing to DefinitelyTyped
-The reason it's so easy to get great `.d.ts` files for most libraries is that developers like you contribute their work back to DefinitelyTyped.
-Contributing `.d.ts` files is a great way to get into the open source community if it's something you've never tried before, and as soon as your changes are accepted, every other developer in the world has access to your work.
-
-If you're interested in giving it a shot, check out the [guidance on DefinitelyTyped](https://github.com/definitelyTyped/DefinitelyTyped/#how-can-i-contribute).
-If you're not interested, [you should tell me why](https://www.surveymonkey.com/r/LN2CV82) so we can help make it easier in the future!
-
-### Summary of `.d.ts` management
-In general if you stick to the following steps you should have minimal `.d.ts` issues;
-1. After installing any npm package as a dependency or dev dependency, immediately try to install the `.d.ts` file via `@types`.
-2. If the library has a `.d.ts` file on DefinitelyTyped, the install will succeed and you are done.
-If the install fails because the package doesn't exist, continue to step 3.
-3. Make sure you project is [configured for supplying your own `d.ts` files](#setting-up-typescript-to-look-for-dts-files-in-another-folder)
-4. Try to [generate a `.d.ts` file with dts-gen](#using-dts-gen).
-If it succeeds, you are done.
-If not, continue to step 5.
-5. Create a file called `<some-library>.d.ts` in your `types` folder.
-6. Add the following code:
-```ts
-declare module "<some-library>";
-```
-7. At this point everything should compile with no errors and you can either improve the types in the `.d.ts` file by following this [guide on authoring `.d.ts` files](http://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) or continue with no types.
-8. If you are still having issues, let me know by sending me an email or pinging me on twitter, I will help you.
 
 ## Debugging
 Debugging TypeScript is exactly like debugging JavaScript with one caveat, you need source maps.
@@ -539,17 +425,6 @@ Notice that ESLint is not a part of the main watch task.
 
 If you are interested in seeing ESLint feedback as soon as possible, I strongly recommend the [VS Code ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
 
-### VSCode Extensions
-
-To enhance your development experience while working in VSCode we also provide you a list of the suggested extensions for working with this project:
-
-![Suggested Extensions In VSCode](https://user-images.githubusercontent.com/14539/34583539-6f290a30-f198-11e7-8804-30f40d418e20.png)
-
-- [VS Code ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
-- [Azure Cosmos DB](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-cosmosdb)
-- [Azure App Service](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice)
-
 # Dependencies
 Dependencies are managed through `package.json`.
 In that file you'll find two sections:
@@ -569,15 +444,8 @@ In that file you'll find two sections:
 | express                         | Node.js web framework.                                                |
 | express-session                 | Express 4 middleware.                                                 |
 | express-validator               | Easy form validation for Express.                                     |
-| fbgraph                         | Facebook Graph API library.                                           |
 | lodash                          | General utility library.                                              |
 | lusca                           | CSRF middleware.                                                      |
-| mongoose                        | MongoDB ODM.                                                          |
-| nodemailer                      | Node.js library for sending emails.                                   |
-| passport                        | Simple and elegant authentication library for node.js                 |
-| passport-facebook               | Sign-in with Facebook plugin.                                         |
-| passport-local                  | Sign-in with Username and Password plugin.                            |
-| pug (jade)                      | Template engine for Express.                                          |
 | request                         | Simplified HTTP request library.                                       |
 | request-promise                 | Promisified HTTP request library. Let's us use async/await             |
 | winston                         | Logging library                                                       |

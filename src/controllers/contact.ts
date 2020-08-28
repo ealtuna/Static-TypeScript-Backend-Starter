@@ -1,27 +1,15 @@
-import nodemailer from "nodemailer";
 import { Request, Response } from "express";
 import { check, validationResult } from "express-validator";
-
-const transporter = nodemailer.createTransport({
-    service: "SendGrid",
-    auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-    }
-});
 
 /**
  * Contact form page.
  * @route GET /contact
  */
 export const getContact = (req: Request, res: Response) => {
-    res.render("contact", {
-        title: "Contact"
-    });
+    res.send({title: "Contact"})
 };
 
 /**
- * Send a contact form via Nodemailer.
  * @route POST /contact
  */
 export const postContact = async (req: Request, res: Response) => {
@@ -34,18 +22,4 @@ export const postContact = async (req: Request, res: Response) => {
     if (!errors.isEmpty()) {
         return res.redirect("/contact");
     }
-
-    const mailOptions = {
-        to: "your@email.com",
-        from: `${req.body.name} <${req.body.email}>`,
-        subject: "Contact Form",
-        text: req.body.message
-    };
-
-    transporter.sendMail(mailOptions, (err) => {
-        if (err) {
-            return res.redirect("/contact");
-        }
-        res.redirect("/contact");
-    });
 };
