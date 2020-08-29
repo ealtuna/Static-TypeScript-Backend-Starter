@@ -8,7 +8,7 @@ import { ParseService } from "../service/parse-service";
 export const FIRST_NAME_SUFFIX = "0000";
 export const LAST_NAME_SUFFIX = "000";
 
-@JsonController()
+@JsonController("/v1")
 export class ParseControllerV1 implements ParseController {
 
     parseService: ParseService;
@@ -17,7 +17,7 @@ export class ParseControllerV1 implements ParseController {
         this.parseService = new ParseService();
     }
 
-    @Post("/parse/v1")
+    @Post("/parse")
     parse(@Body({ required: true }) body: ParseInput): Client {
         const originalClient = this.parseService.parse(body);
         return new Client(

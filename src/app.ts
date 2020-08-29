@@ -14,6 +14,7 @@ import { CustomErrorHandler } from "./middleware/custom-error-handler";
 
 // Create Express server
 const app: Application = createExpressServer({
+    routePrefix: "/api",
     controllers: [ParseControllerV1, ParseControllerV2],
     interceptors: [SuccessInterceptor],
     middlewares: [CustomErrorHandler],

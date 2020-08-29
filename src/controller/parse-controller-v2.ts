@@ -5,7 +5,7 @@ import { ParseInput } from "../input/parse-input";
 import { Client } from "../model/client";
 import { ParseService } from "../service/parse-service";
 
-@JsonController()
+@JsonController("/v2")
 export class ParseControllerV2 implements ParseController {
 
     parseService: ParseService;
@@ -14,7 +14,7 @@ export class ParseControllerV2 implements ParseController {
         this.parseService = new ParseService();
     }
     
-    @Post("/parse/v2")
+    @Post("/parse")
     parse(@Body({ required: true }) body: ParseInput): Client {
         const client = this.parseService.parse(body);
         const [, id0, id1] = client.clientId.match(/(\d{3})(\d{4})/);
