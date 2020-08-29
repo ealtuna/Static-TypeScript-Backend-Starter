@@ -7,12 +7,17 @@ import session, { MemoryStore } from "express-session";
 import { SESSION_SECRET } from "./util/secrets";
 
 // Controllers (route handlers)
-import { ParseControllerV1 } from "./controllers/parse/parse-controller-v1";
-import { ParseControllerV2 } from "./controllers/parse/parse-controller-v2";
+import { ParseControllerV1 } from "./controller/parse-controller-v1";
+import { ParseControllerV2 } from "./controller/parse-controller-v2";
+import { SuccessInterceptor } from "./middleware/success-interceptor";
+import { CustomErrorHandler } from "./middleware/custom-error-handler";
 
 // Create Express server
 const app: Application = createExpressServer({
     controllers: [ParseControllerV1, ParseControllerV2],
+    interceptors: [SuccessInterceptor],
+    middlewares: [CustomErrorHandler],
+    defaultErrorHandler: false,
     classTransformer: true
 });
 

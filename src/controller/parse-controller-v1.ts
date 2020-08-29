@@ -1,17 +1,25 @@
 import { JsonController, Param, Body, Get, Post, Put, Delete } from "routing-controllers";
 
-import { ParseInput } from "./parse-input";
+import { ParseInput } from "../input/parse-input";
 import { ParseController } from "./parse-controller";
-import { Client } from "../../model/client";
+import { Client } from "../model/client";
+import { ParseService } from "../service/parse-service";
 
 export const FIRST_NAME_SUFFIX = "0000";
 export const LAST_NAME_SUFFIX = "000";
 
 @JsonController()
 export class ParseControllerV1 implements ParseController {
+
+    parseService: ParseService;
+
+    constructor() {
+        this.parseService = new ParseService();
+    }
+
     @Post("/parse/v1")
     parse(@Body({ required: true }) body: ParseInput): Client {
-        const originalClient = body.parse();
+        const originalClient = this.parseService.parse(body);
         return new Client(
             originalClient.firstName + FIRST_NAME_SUFFIX,
             originalClient.lastName + LAST_NAME_SUFFIX,
