@@ -12,10 +12,10 @@ export const WRONG_INPUT_EXAMPLES = [
     "7JOHN0000MICHAEL0009994567A"
 ];
 
-describe("POST /parse/v1", () => {
+describe("POST /v1/parse", () => {
     it("should return 200 OK", () => {
         return request(app)
-            .post("/parse/v1")
+            .post("/api/v1/parse")
             .send({
                 data: "JOHN0000MICHAEL0009994567"
             })
@@ -31,13 +31,13 @@ describe("POST /parse/v1", () => {
     });
     it("should return 400 when no body provided", () => {
         return request(app)
-            .post("/parse/v1")
+            .post("/api/v1/parse")
             .expect(400)
             .expect({ statusCode: 400 });
     });
     test.each(WRONG_INPUT_EXAMPLES)("should return 400 when wrong data format provided %s", (data) => {
         return request(app)
-            .post("/parse/v1")
+            .post("/api/v1/parse")
             .send({ data })
             .expect(400)
             .expect({ statusCode: 400 });
